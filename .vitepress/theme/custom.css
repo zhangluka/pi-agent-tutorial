@@ -479,6 +479,8 @@ h1, h2, h3, h4, h5, h6,
 
 .VPFeatures .items {
   gap: 20px !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
 }
 
 .VPFeature {
