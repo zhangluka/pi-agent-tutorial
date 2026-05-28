@@ -1,16 +1,17 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
+  base: '/pi-agent-tutorial/',
   lang: 'zh-CN',
   title: 'Pi Agent 原理与实现',
   description: '从零到一实现一个 AI Agent —— 基于 Pi 的渐进式教程',
 
   head: [
-    ['link', { rel: 'icon', href: '/favicon.svg' }],
+    ['link', { rel: 'icon', href: '/pi-agent-tutorial/favicon.svg' }],
   ],
 
   themeConfig: {
-    logo: '/logo.svg',
+    logo: '/pi-agent-tutorial/logo.svg',
     siteTitle: 'Pi Agent 教程',
 
     nav: [
