@@ -477,12 +477,20 @@ h1, h2, h3, h4, h5, h6,
   padding: var(--sp-8) 0 var(--sp-16) !important;
 }
 
+.VPFeatures .items {
+  gap: 20px !important;
+}
+
 .VPFeature {
   border-radius: var(--r-lg) !important;
   border: 1px solid var(--vp-c-divider) !important;
   background: var(--c-ivory) !important;
-  padding: var(--sp-8) !important;
+  padding: var(--sp-6) var(--sp-8) !important;
   transition: all 0.25s ease;
+  position: relative;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
 }
 
 .VPFeature:hover {
@@ -491,21 +499,30 @@ h1, h2, h3, h4, h5, h6,
   transform: translateY(-2px);
 }
 
-.VPFeature .icon {
-  font-size: 28px !important;
-  margin-bottom: var(--sp-4) !important;
+/* Numbered anchor — visual rhythm for the grid */
+.VPFeature::before {
+  content: counter(feature-counter);
+  counter-increment: feature-counter;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--c-slate-300);
+  letter-spacing: 0.05em;
+  margin-bottom: var(--sp-3);
   display: block;
-  width: 48px;
-  height: 48px;
-  line-height: 48px;
-  text-align: center;
-  border-radius: var(--r-md);
-  background: var(--c-parchment);
+}
+
+.VPFeatures .items {
+  counter-reset: feature-counter;
+}
+
+.VPFeature .icon {
+  display: none !important;
 }
 
 .VPFeature .title {
   font-family: var(--font-display) !important;
-  font-size: 16px !important;
+  font-size: 15px !important;
   font-weight: 600 !important;
   color: var(--c-slate-900) !important;
   margin-bottom: var(--sp-2) !important;
@@ -517,6 +534,7 @@ h1, h2, h3, h4, h5, h6,
   font-size: 14px !important;
   color: var(--c-slate-500) !important;
   line-height: 1.65 !important;
+  flex: 1;
 }
 
 
@@ -573,18 +591,25 @@ h1, h2, h3, h4, h5, h6,
 .VPFooter {
   border-top: 1px solid var(--vp-c-divider) !important;
   background: var(--c-ivory-warm) !important;
+  padding: var(--sp-10) 0 !important;
+}
+
+.VPFooter .container {
+  max-width: 960px;
 }
 
 .VPFooter .message {
   font-family: var(--font-display);
   font-size: 13px;
   color: var(--c-slate-400);
+  letter-spacing: 0.01em;
 }
 
 .VPFooter .copyright {
   font-family: var(--font-display);
   font-size: 12px;
   color: var(--c-slate-300);
+  margin-top: var(--sp-1);
 }
 
 
