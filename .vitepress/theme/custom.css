@@ -1,38 +1,631 @@
+/* ============================================================
+   Pi Agent Tutorial · Visual Design System
+   Ref: Anthropic-style editorial — warm earth tones + serif body
+   ============================================================ */
+
+/* --- Google Fonts (editorial feel) --- */
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300..900;1,8..60,300..900&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+
+/* --- Design Tokens --- */
 :root {
-  --vp-c-brand-1: #5b8def;
-  --vp-c-brand-2: #4a7de0;
-  --vp-c-brand-3: #3a6dd1;
-  --vp-c-brand-soft: rgba(91, 141, 239, 0.14);
+  /* Color: warm earth palette */
+  --c-ivory:       #faf9f5;
+  --c-ivory-warm:  #f5f3ed;
+  --c-parchment:   #eeeade;
+  --c-slate-900:   #141413;
+  --c-slate-700:   #2d2d2a;
+  --c-slate-500:   #5e5d59;
+  --c-slate-400:   #87867f;
+  --c-slate-300:   #b0afa8;
+  --c-clay:        #c04a1a;
+  --c-clay-soft:   #d97757;
+  --c-clay-glow:   rgba(192, 74, 26, 0.10);
+  --c-olive:       #5c7a3a;
+  --c-olive-soft:   rgba(92, 122, 58, 0.10);
+  --c-sky:         #3a7ab5;
+  --c-sky-soft:    rgba(58, 122, 181, 0.08);
+  --c-warn:        #b8860b;
+  --c-warn-soft:   rgba(184, 134, 11, 0.08);
+
+  /* Typography */
+  --font-body:    'Source Serif 4', 'Noto Serif SC', Georgia, 'Times New Roman', serif;
+  --font-display: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', 'Cascadia Code', Menlo, monospace;
+
+  /* Spacing scale */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.25rem;
+  --sp-6: 1.5rem;
+  --sp-8: 2rem;
+  --sp-10: 2.5rem;
+  --sp-12: 3rem;
+  --sp-16: 4rem;
+
+  /* Border radius (three-level) */
+  --r-sm: 0.25rem;
+  --r-md: 0.5rem;
+  --r-lg: 1rem;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(20, 20, 19, 0.04);
+  --shadow-md: 0 2px 8px rgba(20, 20, 19, 0.06);
+  --shadow-lg: 0 4px 24px rgba(20, 20, 19, 0.08);
+
+  /* VitePress brand overrides */
+  --vp-c-brand-1: var(--c-clay);
+  --vp-c-brand-2: var(--c-clay-soft);
+  --vp-c-brand-3: #a03d15;
+  --vp-c-brand-soft: var(--c-clay-glow);
+
+  --vp-c-bg: var(--c-ivory);
+  --vp-c-bg-soft: var(--c-ivory-warm);
+  --vp-c-bg-mute: var(--c-parchment);
+
+  --vp-c-text-1: var(--c-slate-900);
+  --vp-c-text-2: var(--c-slate-500);
+  --vp-c-text-3: var(--c-slate-400);
+
+  --vp-c-divider: rgba(20, 20, 19, 0.06);
+  --vp-c-gutter: rgba(20, 20, 19, 0.04);
+
+  /* Typography overrides */
+  --vp-font-family-base: var(--font-body);
+  --vp-font-family-mono: var(--font-mono);
+
+  /* Nav height */
+  --vp-nav-height: 56px;
 }
 
 .dark {
-  --vp-c-brand-1: #7ba4f7;
-  --vp-c-brand-2: #5b8def;
-  --vp-c-brand-3: #4a7de0;
-  --vp-c-brand-soft: rgba(123, 164, 247, 0.14);
+  --c-ivory:       #1a1a18;
+  --c-ivory-warm:  #222220;
+  --c-parchment:   #2a2a27;
+  --c-slate-900:   #e8e6dc;
+  --c-slate-700:   #d0cec5;
+  --c-slate-500:   #a09e96;
+  --c-slate-400:   #7a7870;
+  --c-slate-300:   #5e5d59;
+  --c-clay:        #e8734a;
+  --c-clay-soft:   #d97757;
+  --c-clay-glow:   rgba(232, 115, 74, 0.12);
+  --c-olive:       #8ab558;
+  --c-olive-soft:   rgba(138, 181, 88, 0.12);
+  --c-sky:         #6aafef;
+  --c-sky-soft:    rgba(106, 175, 239, 0.10);
+  --c-warn:        #daa520;
+  --c-warn-soft:   rgba(218, 165, 32, 0.10);
+
+  --vp-c-brand-1: var(--c-clay);
+  --vp-c-brand-2: var(--c-clay-soft);
+  --vp-c-brand-3: #f08050;
+  --vp-c-brand-soft: var(--c-clay-glow);
+
+  --vp-c-bg: var(--c-ivory);
+  --vp-c-bg-soft: var(--c-ivory-warm);
+  --vp-c-bg-mute: var(--c-parchment);
+
+  --vp-c-text-1: var(--c-slate-900);
+  --vp-c-text-2: var(--c-slate-500);
+  --vp-c-text-3: var(--c-slate-400);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 4px 24px rgba(0, 0, 0, 0.3);
 }
 
-/* Custom tip box styles */
-.custom-block.tip {
-  border-color: var(--vp-c-brand-1);
+
+/* ============================================================
+   Global Typography
+   ============================================================ */
+
+/* Body text: serif for editorial feel */
+.VPContent,
+.vp-doc {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+  text-wrap: pretty;
 }
 
-/* Code group styles */
-.vp-code-group .tabs label {
+/* Headings: clean sans */
+h1, h2, h3, h4, h5, h6,
+.vp-doc h1, .vp-doc h2, .vp-doc h3,
+.VPHero .name, .VPHero .text, .VPHero .tagline {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+/* Prose links: subtle underline, no loud color */
+.vp-doc a:not(.header-anchor) {
+  color: var(--c-clay);
+  text-decoration: underline;
+  text-decoration-color: rgba(192, 74, 26, 0.25);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s;
+}
+.vp-doc a:not(.header-anchor):hover {
+  text-decoration-color: var(--c-clay);
+}
+
+/* Strong text */
+.vp-doc strong {
+  color: var(--c-slate-900);
   font-weight: 600;
 }
 
-/* Mermaid diagram container */
+
+/* ============================================================
+   Navigation Bar
+   ============================================================ */
+
+.VPNavBar {
+  border-bottom: 1px solid var(--vp-c-divider);
+  backdrop-filter: blur(12px);
+  background: rgba(250, 249, 245, 0.85) !important;
+}
+
+.dark .VPNavBar {
+  background: rgba(26, 26, 24, 0.85) !important;
+}
+
+.VPNavBar .title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+}
+
+.VPNavBarMenuLink {
+  font-family: var(--font-display) !important;
+  font-size: 13.5px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.01em;
+}
+
+
+/* ============================================================
+   Sidebar
+   ============================================================ */
+
+.VPSidebar {
+  font-family: var(--font-display);
+}
+
+.VPSidebar .group .title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--c-slate-400);
+}
+
+.VPSidebarItem .text {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.VPSidebarItem.level-1 .text {
+  font-weight: 500;
+  color: var(--c-slate-700);
+}
+
+.VPSidebarItem.active .text {
+  color: var(--c-clay) !important;
+  font-weight: 600;
+}
+
+
+/* ============================================================
+   Content Outline (right sidebar)
+   ============================================================ */
+
+.VPDocOutlineItem .outline-link {
+  font-family: var(--font-display);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--c-slate-400);
+  transition: color 0.2s;
+}
+
+.VPDocOutlineItem .outline-link.active {
+  color: var(--c-clay);
+  font-weight: 500;
+}
+
+
+/* ============================================================
+   Code Blocks
+   ============================================================ */
+
+/* Inline code */
+.vp-doc :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  font-weight: 500;
+  padding: 0.15em 0.4em;
+  border-radius: var(--r-sm);
+  background: var(--c-parchment);
+  color: var(--c-clay);
+  border: 1px solid rgba(20, 20, 19, 0.04);
+}
+
+.dark .vp-doc :not(pre) > code {
+  background: var(--c-parchment);
+  color: var(--c-clay-soft);
+}
+
+/* Code blocks */
+.vp-doc div[class*="language-"] {
+  border-radius: var(--r-md);
+  border: 1px solid rgba(20, 20, 19, 0.06);
+  box-shadow: var(--shadow-sm);
+}
+
+.vp-doc div[class*="language-"] pre {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.7;
+  padding: var(--sp-5) var(--sp-6);
+}
+
+.vp-doc div[class*="language-"] code {
+  font-family: var(--font-mono);
+}
+
+/* Line numbers */
+.vp-doc .line-numbers {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--c-slate-300);
+}
+
+
+/* ============================================================
+   Custom Blocks (tip / warning / danger / info)
+   ============================================================ */
+
+.vp-doc .custom-block {
+  border-radius: var(--r-md);
+  padding: var(--sp-5) var(--sp-6);
+  font-size: 14.5px;
+  line-height: 1.7;
+  border: 1px solid;
+}
+
+/* Tip: olive green */
+.vp-doc .custom-block.tip {
+  background: var(--c-olive-soft);
+  border-color: var(--c-olive);
+  border-left-width: 3px;
+}
+
+.vp-doc .custom-block.tip .custom-block-title {
+  color: var(--c-olive);
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+/* Warning: warm gold */
+.vp-doc .custom-block.warning {
+  background: var(--c-warn-soft);
+  border-color: var(--c-warn);
+  border-left-width: 3px;
+}
+
+.vp-doc .custom-block.warning .custom-block-title {
+  color: var(--c-warn);
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+/* Danger: clay red */
+.vp-doc .custom-block.danger {
+  background: var(--c-clay-glow);
+  border-color: var(--c-clay);
+  border-left-width: 3px;
+}
+
+.vp-doc .custom-block.danger .custom-block-title {
+  color: var(--c-clay);
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+/* Details/summary blocks */
+.vp-doc details {
+  border-radius: var(--r-md);
+  border: 1px solid var(--vp-c-divider);
+  background: var(--c-ivory-warm);
+  padding: var(--sp-4) var(--sp-5);
+}
+
+.vp-doc details summary {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--c-slate-700);
+  cursor: pointer;
+}
+
+
+/* ============================================================
+   Tables
+   ============================================================ */
+
+.vp-doc table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  border: 1px solid var(--vp-c-divider);
+  font-size: 14px;
+}
+
+.vp-doc table th {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--c-slate-500);
+  background: var(--c-parchment);
+  padding: var(--sp-3) var(--sp-4);
+}
+
+.vp-doc table td {
+  padding: var(--sp-3) var(--sp-4);
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+.vp-doc table tr:hover td {
+  background: var(--c-ivory-warm);
+}
+
+
+/* ============================================================
+   Homepage Hero
+   ============================================================ */
+
+.VPHero {
+  padding: var(--sp-16) 0 var(--sp-12) !important;
+}
+
+.VPHero .name {
+  font-family: var(--font-display) !important;
+  font-size: clamp(2rem, 5vw, 3.2rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.1 !important;
+  background: linear-gradient(135deg, var(--c-slate-900) 0%, var(--c-slate-700) 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+}
+
+.dark .VPHero .name {
+  background: linear-gradient(135deg, var(--c-ivory) 0%, var(--c-parchment) 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+}
+
+.VPHero .text {
+  font-family: var(--font-display) !important;
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem) !important;
+  font-weight: 500 !important;
+  color: var(--c-clay) !important;
+  letter-spacing: -0.01em !important;
+}
+
+.VPHero .tagline {
+  font-family: var(--font-body) !important;
+  font-size: clamp(1rem, 2vw, 1.15rem) !important;
+  color: var(--c-slate-500) !important;
+  line-height: 1.7 !important;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* Hero buttons */
+.VPHero .actions .VPButton.brand {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 28px;
+  border-radius: var(--r-md);
+  background: var(--c-slate-900) !important;
+  color: var(--c-ivory) !important;
+  border: none;
+  transition: all 0.2s;
+  letter-spacing: 0.01em;
+}
+
+.VPHero .actions .VPButton.brand:hover {
+  background: var(--c-slate-700) !important;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.VPHero .actions .VPButton.alt {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 14px;
+  padding: 10px 28px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--vp-c-divider);
+  color: var(--c-slate-700) !important;
+  background: transparent !important;
+  transition: all 0.2s;
+}
+
+.VPHero .actions .VPButton.alt:hover {
+  border-color: var(--c-slate-400);
+  color: var(--c-slate-900) !important;
+}
+
+
+/* ============================================================
+   Homepage Features
+   ============================================================ */
+
+.VPFeatures {
+  padding: var(--sp-8) 0 var(--sp-16) !important;
+}
+
+.VPFeature {
+  border-radius: var(--r-lg) !important;
+  border: 1px solid var(--vp-c-divider) !important;
+  background: var(--c-ivory) !important;
+  padding: var(--sp-8) !important;
+  transition: all 0.25s ease;
+}
+
+.VPFeature:hover {
+  border-color: var(--c-slate-300) !important;
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.VPFeature .icon {
+  font-size: 28px !important;
+  margin-bottom: var(--sp-4) !important;
+  display: block;
+  width: 48px;
+  height: 48px;
+  line-height: 48px;
+  text-align: center;
+  border-radius: var(--r-md);
+  background: var(--c-parchment);
+}
+
+.VPFeature .title {
+  font-family: var(--font-display) !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: var(--c-slate-900) !important;
+  margin-bottom: var(--sp-2) !important;
+  letter-spacing: -0.01em;
+}
+
+.VPFeature .details {
+  font-family: var(--font-body) !important;
+  font-size: 14px !important;
+  color: var(--c-slate-500) !important;
+  line-height: 1.65 !important;
+}
+
+
+/* ============================================================
+   Mermaid Diagrams
+   ============================================================ */
+
 .mermaid {
   display: flex;
   justify-content: center;
-  margin: 1em 0;
+  margin: var(--sp-8) 0;
+  padding: var(--sp-6);
+  background: var(--c-ivory-warm);
+  border-radius: var(--r-md);
+  border: 1px solid var(--vp-c-divider);
 }
 
-/* Architecture diagram caption */
+.dark .mermaid {
+  background: var(--c-parchment);
+}
+
 .diagram-caption {
   text-align: center;
-  color: var(--vp-c-text-2);
-  font-size: 0.85em;
-  margin-top: 0.5em;
+  color: var(--c-slate-400);
+  font-family: var(--font-display);
+  font-size: 13px;
+  margin-top: var(--sp-2);
+}
+
+
+/* ============================================================
+   Blockquotes
+   ============================================================ */
+
+.vp-doc blockquote {
+  border-left: 3px solid var(--c-clay-soft);
+  padding: var(--sp-4) var(--sp-6);
+  margin: var(--sp-6) 0;
+  background: var(--c-clay-glow);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  color: var(--c-slate-700);
+  font-style: italic;
+}
+
+.vp-doc blockquote p {
+  margin: 0;
+}
+
+
+/* ============================================================
+   Footer
+   ============================================================ */
+
+.VPFooter {
+  border-top: 1px solid var(--vp-c-divider) !important;
+  background: var(--c-ivory-warm) !important;
+}
+
+.VPFooter .message {
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: var(--c-slate-400);
+}
+
+.VPFooter .copyright {
+  font-family: var(--font-display);
+  font-size: 12px;
+  color: var(--c-slate-300);
+}
+
+
+/* ============================================================
+   Scrollbar (subtle)
+   ============================================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--c-slate-300);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--c-slate-400);
+}
+
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .VPHero {
+    padding: var(--sp-10) 0 var(--sp-8) !important;
+  }
+
+  .VPFeature {
+    padding: var(--sp-6) !important;
+  }
+
+  .vp-doc div[class*="language-"] pre {
+    font-size: 12.5px;
+    padding: var(--sp-4) var(--sp-4);
+  }
 }
