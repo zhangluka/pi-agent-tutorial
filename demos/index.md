@@ -23,7 +23,7 @@ git clone <repo-url>
 cd pi-agent-tutorial
 
 # 进入任意 Demo 目录
-cd demos/demo-01-hello-llm
+cd demos/demo-01
 
 # 安装依赖
 npm install

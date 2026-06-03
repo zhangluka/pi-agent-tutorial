@@ -7,11 +7,28 @@
 | Provider | 优势 | 劣势 |
 |----------|------|------|
 | OpenAI (GPT-4o) | 综合能力强，工具调用稳定 | 贵 |
-| Anthropic (Claude) | 长上下文，代码理解好 | 有时过于谨慎 |
-| Google (Gemini) | 便宜，速度快 | 工具调用偶尔不稳定 |
+| Anthropic (Claude) | 长上下文，代码理解好 | 某些场景下可能拒绝执行有风险的操作 |
+| Google (Gemini) | 便宜，速度快 | 工具调用在某些场景下可能不够稳定 |
 | DeepSeek | 极其便宜 | 能力略弱 |
 
 Pi 的做法是：**用一套代码支持所有 Provider，中途可以无缝切换**。
+
+## 运行前置条件
+
+在开始本章之前，请确保满足以下条件：
+
+1. **Node.js 18+**：原生支持 `fetch` API
+2. **至少一个 Provider 的 API Key**：OpenAI、Anthropic 或 Google
+3. **环境变量**：设置对应的 API Key
+
+```bash
+# 检查 Node.js 版本
+node --version
+
+# 设置 API Key（以 OpenAI 和 Anthropic 为例）
+export OPENAI_API_KEY=sk-xxx
+export ANTHROPIC_API_KEY=sk-ant-xxx
+```
 
 ## 统一 Provider 抽象
 
@@ -52,7 +69,7 @@ interface ChatResponse {
   stopReason: "tool_use" | "end_turn" | "max_tokens"
 }
 
-// 统一的 Provider 接口
+// 统一的 Provider 接口（完整版本，Ch03 中是简化版）
 interface Provider {
   config: ProviderConfig
   chat(request: ChatRequest): Promise<ChatResponse>
@@ -226,6 +243,7 @@ class AnthropicProvider implements Provider {
   private formatMessages(request: ChatRequest): any[] {
     // Anthropic 不支持 system 消息在 messages 数组中
     // 也不支持连续的同角色消息，需要合并
+    // 注意：内部使用 camelCase (toolCallId)，API 层使用 snake_case (tool_use_id)
     const messages = []
     for (const msg of request.messages) {
       if (msg.role === "system") continue  // 跳过，system 单独传
@@ -259,7 +277,7 @@ class AnthropicProvider implements Provider {
 
 ::: warning Anthropic 的关键差异
 1. `system` 是顶级字段，不在 messages 数组中
-2. 工具结果用 `tool_result` 类型，放在 `user` 角色中
+2. 工具结果用 `tool_result` 类型，放在 `user` 角色中（实际格式更复杂，可包含 `is_error` 字段和多模态 `content` 数组）
 3. 工具定义用 `input_schema` 而不是 `parameters`
 4. 不支持连续的同角色消息
 :::

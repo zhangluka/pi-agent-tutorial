@@ -4,6 +4,23 @@
 
 前面 11 章，我们分别实现了 Agent 的各个模块。这一章，我们把它们组装成一个完整可运行的 Mini Agent。
 
+## 运行前置条件
+
+在开始本章之前，请确保满足以下条件：
+
+1. **Node.js 18+**：原生支持 `fetch` API
+2. **至少一个 Provider 的 API Key**：OpenAI、Anthropic 或 Google
+3. **环境变量**：设置对应的 API Key
+
+```bash
+# 检查 Node.js 版本
+node --version
+
+# 设置 API Key（以 OpenAI 和 Anthropic 为例）
+export OPENAI_API_KEY=sk-xxx
+export ANTHROPIC_API_KEY=sk-ant-xxx
+```
+
 ## 项目结构
 
 ```

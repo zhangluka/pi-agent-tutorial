@@ -6,6 +6,22 @@
 
 这一章，我们将实现这个循环。
 
+## 运行前置条件
+
+在开始本章之前，请确保满足以下条件：
+
+1. **Node.js 18+**：原生支持 `fetch` API
+2. **OpenAI API Key**：本章示例使用 OpenAI 的 Function Calling 功能
+3. **环境变量**：设置 `OPENAI_API_KEY`
+
+```bash
+# 检查 Node.js 版本
+node --version
+
+# 设置 API Key
+export OPENAI_API_KEY=sk-xxx
+```
+
 ## Function Calling：让 LLM 调用工具
 
 在实现 Agent Loop 之前，我们需要理解 **Function Calling**（函数调用）机制。这是 OpenAI 在 2023 年引入的能力，让 LLM 不只是生成文本，还能**请求调用函数**。
@@ -147,7 +163,7 @@ interface Tool {
   name: string
   description: string
   parameters: object
-  execute: (args: Record<string, any>) => Promise<string>
+  execute: (toolCallId: string, args: Record<string, any>) => Promise<string>
 }
 
 // 工具注册表
@@ -190,7 +206,7 @@ async function executeTool(toolCall: ToolCall): Promise<string> {
 
   try {
     const args = JSON.parse(toolCall.function.arguments)
-    return await tool.execute(args)
+    return await tool.execute(toolCall.id, args)
   } catch (err) {
     return `工具执行错误: ${err.message}`
   }
@@ -253,7 +269,7 @@ registerTool({
     },
     required: ["path"]
   },
-  execute: async (args) => {
+  execute: async (_toolCallId, args) => {
     const fs = await import("fs/promises")
     try {
       return await fs.readFile(args.path, "utf-8")
@@ -273,10 +289,10 @@ registerTool({
     },
     required: ["command"]
   },
-  execute: async (args) => {
+  execute: async (_toolCallId, args) => {
     const { execSync } = await import("child_process")
     try {
-      return execSync(args.command, { encoding: "utf-8", timeout: 10000 })
+      return execSync(args.command, { encoding: "utf-8", timeout: 30000 })
     } catch (err) {
       return `命令执行失败: ${err.message}`
     }

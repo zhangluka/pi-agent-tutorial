@@ -112,10 +112,16 @@ const mcpBridge = {
 const sandboxedBash = {
   name: "bash",
   execute: async (args) => {
-    const containerId = execSync(`docker run -d -v $(pwd):/workspace node:18 tail -f /dev/null`)
-    const result = execSync(`docker exec ${containerId} bash -c "${args.command}"`)
-    execSync(`docker rm -f ${containerId}`)
-    return result
+    let containerId: string | null = null
+    try {
+      containerId = execSync(`docker run -d -v $(pwd):/workspace node:18 tail -f /dev/null`).toString().trim()
+      const result = execSync(`docker exec ${containerId} bash -c "${args.command}"`)
+      return result
+    } finally {
+      if (containerId) {
+        execSync(`docker rm -f ${containerId}`)
+      }
+    }
   },
 }
 ```

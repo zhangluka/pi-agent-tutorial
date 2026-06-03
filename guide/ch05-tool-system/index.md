@@ -4,6 +4,22 @@
 
 上一章我们实现了简单的 read 和 bash。这一章，我们将完整实现 Pi 的四个核心工具，并深入理解工具系统的设计细节。
 
+## 运行前置条件
+
+在开始本章之前，请确保满足以下条件：
+
+1. **Node.js 18+**：原生支持 `fetch` API
+2. **OpenAI API Key**：本章示例使用 OpenAI 的 Function Calling 功能
+3. **环境变量**：设置 `OPENAI_API_KEY`
+
+```bash
+# 检查 Node.js 版本
+node --version
+
+# 设置 API Key
+export OPENAI_API_KEY=sk-xxx
+```
+
 ## 工具设计原则
 
 Pi 的工具设计遵循几个关键原则：
@@ -280,6 +296,8 @@ bash:    name + description + parameters ≈ 170 tokens
 
 ```typescript
 // 安全的工具执行包装器
+// 注意：工具的 execute 方法可能返回字符串或对象 {content, details}
+// safeExecuteTool 会将其统一为字符串返回，以便 Agent Loop 处理
 async function safeExecuteTool(toolCall: ToolCall): Promise<string> {
   const tool = toolRegistry.get(toolCall.function.name)
   if (!tool) return `错误：未知工具 ${toolCall.function.name}`
@@ -305,6 +323,7 @@ async function safeExecuteTool(toolCall: ToolCall): Promise<string> {
     ),
   ])
 
+  // 4. 统一返回类型：工具可能返回字符串或对象，这里统一为字符串
   return typeof result === "string" ? result : JSON.stringify(result)
 }
 ```

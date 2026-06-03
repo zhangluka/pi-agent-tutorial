@@ -6,6 +6,22 @@ Skill 是 Pi 的**按需能力加载**机制。它解决了一个核心矛盾：
 
 Skill 的解决方案：**只在 System Prompt 里放描述，详细指令按需加载**。
 
+## 运行前置条件
+
+在开始本章之前，请确保满足以下条件：
+
+1. **Node.js 18+**：原生支持 `fetch` API
+2. **OpenAI API Key**：本章示例使用 OpenAI 的 API 进行 Skill 匹配
+3. **环境变量**：设置 `OPENAI_API_KEY`
+
+```bash
+# 检查 Node.js 版本
+node --version
+
+# 设置 API Key
+export OPENAI_API_KEY=sk-xxx
+```
+
 ## Skill 的结构
 
 一个 Skill 就是一个目录，里面有一个 `SKILL.md` 文件：

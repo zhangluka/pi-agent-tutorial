@@ -8,6 +8,22 @@ Agent 的对话历史就是它的"记忆"。但对话历史会不断增长，最
 2. **树状结构**：支持分支，探索不同方案
 3. **自动压缩**：上下文快满时，自动总结旧对话
 
+## 运行前置条件
+
+在开始本章之前，请确保满足以下条件：
+
+1. **Node.js 18+**：原生支持 `fetch` API
+2. **OpenAI API Key**：本章示例使用 OpenAI 的 API 进行 Compaction
+3. **环境变量**：设置 `OPENAI_API_KEY`
+
+```bash
+# 检查 Node.js 版本
+node --version
+
+# 设置 API Key
+export OPENAI_API_KEY=sk-xxx
+```
+
 ## JSONL 会话存储
 
 Pi 用 JSONL（JSON Lines）格式存储会话。每条消息是一行 JSON：
@@ -50,6 +66,15 @@ graph TD
 ```typescript
 // session.ts
 import { readFileSync, writeFileSync, existsSync, appendFileSync } from "fs"
+
+interface ToolCall {
+  id: string
+  type: "function"
+  function: {
+    name: string
+    arguments: string
+  }
+}
 
 interface SessionEntry {
   id: string

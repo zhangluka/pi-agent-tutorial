@@ -10,6 +10,21 @@ Pi 的核心只有 4 个工具和一个 Agent Loop。但用户的需求千差万
 
 Pi 的答案是：**核心不内置这些功能，但提供一个强大的扩展系统，让你自己实现**。
 
+## 运行前置条件
+
+在开始本章之前，请确保满足以下条件：
+
+1. **Node.js 18+**：原生支持 `fetch` API
+2. **jiti**：用于加载 TypeScript 扩展（已包含在项目依赖中）
+
+```bash
+# 检查 Node.js 版本
+node --version
+
+# 安装 jiti（如果尚未安装）
+npm install jiti
+```
+
 ## 扩展的生命周期
 
 Pi 的扩展通过**生命周期钩子**（Lifecycle Hooks）与 Agent 交互：
@@ -39,6 +54,8 @@ graph TD
 ```
 
 完整的事件列表：
+
+> 注意：以下生命周期事件名称基于 Pi 架构的教学性描述，具体实现可能有差异。
 
 | 事件 | 触发时机 | 能做什么 |
 |------|---------|---------|
@@ -128,6 +145,8 @@ Pi 用 [jiti](https://github.com/unjs/jiti) 加载 TypeScript 扩展，无需编
 
 ```typescript
 import { createJiti } from "jiti"
+import { readdir } from "fs"
+import path from "path"
 
 async function loadExtensions(dir: string, api: ExtensionAPI) {
   const jiti = createJiti(dir)

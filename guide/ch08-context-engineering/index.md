@@ -1,8 +1,24 @@
 # Ch08 上下文工程
 
+## 运行前置条件
+
+在开始本章之前，请确保满足以下条件：
+
+1. **Node.js 18+**：原生支持 `fetch` API 和 `findLastIndex` 方法
+2. **OpenAI API Key**：本章示例使用 OpenAI 的 API 进行 Skill 加载
+3. **环境变量**：设置 `OPENAI_API_KEY`
+
+```bash
+# 检查 Node.js 版本
+node --version
+
+# 设置 API Key
+export OPENAI_API_KEY=sk-xxx
+```
+
 ## 什么是上下文工程？
 
-上下文工程（Context Engineering）是 Pi 团队提出的核心理念：**Agent 的质量取决于你喂给 LLM 的上下文质量**。
+上下文工程（Context Engineering）是 Pi 团队深度践行的核心理念：**Agent 的质量取决于你喂给 LLM 的上下文质量**。
 
 上下文窗口就像一个有限的工作台（以 GPT-4o 128K 为例）：
 
@@ -234,6 +250,8 @@ sequenceDiagram
 ## 实现上下文管理器
 
 ```typescript
+import { readFile } from "fs/promises"
+
 class ContextManager {
   private systemPrompt: string
   private agentsMd: string
@@ -287,6 +305,7 @@ class ContextManager {
     if (!skillContent) return messages
 
     // 在最后一条用户消息之前注入
+    // 注意：findLastIndex 需要 Node.js 18+
     const lastUserIdx = messages.findLastIndex(m => m.role === "user")
     const newMessages = [...messages]
     newMessages.splice(lastUserIdx, 0, {
