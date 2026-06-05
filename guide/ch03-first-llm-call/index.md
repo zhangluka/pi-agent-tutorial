@@ -26,12 +26,28 @@ sequenceDiagram
     L-->>C: { choices: [{ message: { content: "..." } }] }
 ```
 
+## 运行前置条件
+
+在开始本章之前，请确保满足以下条件：
+
+1. **Node.js 18+**：原生支持 `fetch` API
+2. **API Key**：至少一个 Provider 的 API Key（OpenAI、Anthropic 或 Google）
+3. **环境变量**：设置 `OPENAI_API_KEY`、`ANTHROPIC_API_KEY` 或 `GOOGLE_API_KEY`
+
+```bash
+# 检查 Node.js 版本
+node --version
+
+# 设置 API Key（以 OpenAI 为例）
+export OPENAI_API_KEY=sk-xxx
+```
+
 ## Demo 01：Hello LLM
 
 让我们写第一个 LLM 调用。创建项目：
 
 ```bash
-mkdir demo-01-hello-llm && cd demo-01-hello-llm
+mkdir demo-01 && cd demo-01
 npm init -y
 npm install typescript tsx @types/node
 npx tsc --init
@@ -39,7 +55,7 @@ npx tsc --init
 
 ::: details 项目结构
 ```
-demo-01-hello-llm/
+demo-01/
 ├── src/
 │   └── index.ts
 ├── package.json
@@ -170,7 +186,7 @@ main()
 OpenAI、Anthropic、Google 的 API 格式不同。Pi 的做法是定义一个**统一接口**，然后为每个 Provider 写适配器：
 
 ```typescript
-// 统一的 Provider 接口
+// 统一的 Provider 接口（简化版，完整版本见 Ch06）
 interface Provider {
   name: string
   chat(messages: ChatMessage[], options?: ChatOptions): AsyncGenerator<string>

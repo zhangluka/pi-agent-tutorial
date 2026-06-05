@@ -11,6 +11,22 @@
 
 Pi 用一个自定义的 TUI（Terminal UI）库来处理这些交互。
 
+## 运行前置条件
+
+在开始本章之前，请确保满足以下条件：
+
+1. **Node.js 18+**：原生支持 `fetch` API
+2. **OpenAI API Key**：本章示例使用 OpenAI 的 API 进行交互
+3. **环境变量**：设置 `OPENAI_API_KEY`
+
+```bash
+# 检查 Node.js 版本
+node --version
+
+# 设置 API Key
+export OPENAI_API_KEY=sk-xxx
+```
+
 ## TUI 的核心组件
 
 ```mermaid

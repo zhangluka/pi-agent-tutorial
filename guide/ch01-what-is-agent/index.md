@@ -21,13 +21,13 @@ Agent：你问"帮我重构这个项目"，它先读代码、分析结构、制�
 
 ## Agent 的核心模式：ReAct
 
-2022 年，Yao et al. 提出了 **ReAct**（Reasoning + Acting）模式，这是目前几乎所有 AI Agent 的基础架构：
+2022 年，Yao et al. 提出了 **ReAct**（Reasoning + Acting）模式（正式发表于 ICLR 2023），这是目前几乎所有 AI Agent 的基础架构：
 
 ```mermaid
 graph LR
-    A[用户输入] --> B[推理 Reason]
-    B --> C[行动 Act]
-    C --> D[观察 Observe]
+    A[用户输入] --> B[Thought 推理]
+    B --> C[Action 行动]
+    C --> D[Observation 观察]
     D --> B
     B --> E[输出结果]
     
@@ -40,9 +40,9 @@ graph LR
 
 | 步骤 | 做什么 | 例子 |
 |------|--------|------|
-| **Reason** | LLM 思考当前状态，决定下一步 | "我需要先看看项目的目录结构" |
-| **Act** | 调用一个工具执行操作 | 调用 `bash` 执行 `ls -la` |
-| **Observe** | 获取工具返回的结果 | 看到目录下有 `src/`、`tests/` 等 |
+| **Thought** (推理) | LLM 思考当前状态，决定下一步 | "我需要先看看项目的目录结构" |
+| **Action** (行动) | 调用一个工具执行操作 | 调用 `bash` 执行 `ls -la` |
+| **Observation** (观察) | 获取工具返回的结果 | 看到目录下有 `src/`、`tests/` 等 |
 
 这个循环一直持续，直到 LLM 认为任务完成，不再调用任何工具，直接输出最终回答。
 
@@ -54,27 +54,27 @@ Agent 的执行过程：
 
 ```
 第 1 轮:
-  [Reason] 我需要先看看这个文件的内容
-  [Act]    调用 read("src/utils.ts")
-  [Observe] 看到文件内容，发现第 3、7、12 行用了 var
+  [Thought] 我需要先看看这个文件的内容
+  [Action]  调用 read("src/utils.ts")
+  [Observation] 看到文件内容，发现第 3、7、12 行用了 var
 
 第 2 轮:
-  [Reason] 我需要把第 3 行的 var 改成 const
-  [Act]    调用 edit("src/utils.ts", "var count = 0", "const count = 0")
-  [Observe] 修改成功
+  [Thought] 我需要把第 3 行的 var 改成 const
+  [Action]  调用 edit("src/utils.ts", "var count = 0", "const count = 0")
+  [Observation] 修改成功
 
 第 3 轮:
-  [Reason] 继续修改第 7 行
-  [Act]    调用 edit("src/utils.ts", "var name = 'test'", "const name = 'test'")
-  [Observe] 修改成功
+  [Thought] 继续修改第 7 行
+  [Action]  调用 edit("src/utils.ts", "var name = 'test'", "const name = 'test'")
+  [Observation] 修改成功
 
 第 4 轮:
-  [Reason] 继续修改第 12 行
-  [Act]    调用 edit("src/utils.ts", "var result = null", "const result = null")
-  [Observe] 修改成功，所有 var 都改完了
+  [Thought] 继续修改第 12 行
+  [Action]  调用 edit("src/utils.ts", "var result = null", "const result = null")
+  [Observation] 修改成功，所有 var 都改完了
 
 第 5 轮:
-  [Reason] 任务完成，不再需要调用工具
+  [Thought] 任务完成，不再需要调用工具
   [输出]   "已完成修改，共替换了 3 处 var 为 const"
 ```
 
@@ -127,7 +127,7 @@ tools: [read, write, edit, bash]  // Pi 的选择
 
 ::: warning 为什么 Pi 选择方案 B？
 1. **bash 是万能胶水**：grep、find、ls、git、npm……所有命令行工具都可以通过 bash 调用
-2. **更少的工具 = 更少的 token**：工具定义会占用上下文窗口，4 个工具的定义不到 1000 token
+2. **更少的工具 = 更少的 token**：工具定义会占用上下文窗口，Pi 的系统提示词约 1K token，4 个工具定义约 800 token，总计约 2K token
 3. **LLM 天然会用 bash**：前沿模型在训练时已经见过海量 shell 脚本，不需要你教它怎么用 grep
 4. **更简单的维护**：工具越少，出 bug 的地方越少
 :::
@@ -190,13 +190,13 @@ Demo 08: Mini Agent         → 组装完整项目
 最少需要：read（读代码）、bash（运行测试/lint）
 
 循环：
-1. Reason：我需要审查这个 PR
-2. Act：read 读取变更的文件
-3. Observe：看到代码内容
-4. Reason：这段代码有潜在的 NPE，让我运行一下 lint
-5. Act：bash 执行 lint
-6. Observe：发现 3 个警告
-7. Reason：整理发现，输出审查报告
+1. Thought：我需要审查这个 PR
+2. Action：read 读取变更的文件
+3. Observation：看到代码内容
+4. Thought：这段代码有潜在的 NPE，让我运行一下 lint
+5. Action：bash 执行 lint
+6. Observation：发现 3 个警告
+7. Thought：整理发现，输出审查报告
 :::
 :::
 

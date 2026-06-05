@@ -43,6 +43,8 @@ function executeTool(name: string, args: Record<string, any>): string {
         condition: ["晴", "多云", "小雨"][Math.floor(Math.random() * 3)],
       })
     case "calculate":
+      // 注意：生产环境应使用安全的数学表达式解析器（如 mathjs 或 expr-eval）
+      // 这里使用 eval() 是为了简化教学示例
       try { return JSON.stringify({ result: eval(args.expression) }) }
       catch { return JSON.stringify({ error: "计算错误" }) }
     default:
