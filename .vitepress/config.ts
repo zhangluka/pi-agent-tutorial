@@ -1,6 +1,8 @@
 import { defineConfig } from 'vitepress'
+import { withMermaid } from 'vitepress-plugin-mermaid'
 
-export default defineConfig({
+export default withMermaid(
+  defineConfig({
   base: '/pi-agent-tutorial/',
   lang: 'zh-CN',
   title: 'Pi Agent 原理与实现',
@@ -129,3 +131,4 @@ export default defineConfig({
     lineNumbers: true,
   },
 })
+)
